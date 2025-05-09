@@ -1,0 +1,5 @@
+@use '_variables' as var;
+
+h2{
+    color: var.$red-color;
+}
