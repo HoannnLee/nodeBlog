@@ -1,4 +1,6 @@
 node_modules/
 node.docx
+.vscode
+
 
 src/public/css
