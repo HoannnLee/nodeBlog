@@ -1,6 +1,7 @@
 @charset "UTF-8";
 h2 {
-  color: green;
+  color: #000;
+  font-weight: 700;
 }
 
 .cardCourse-item {
@@ -24,6 +25,17 @@ h2 {
   text-overflow: ellipsis;
   line-height: 1.8rem;
   height: 3.6rem;
+}
+
+.btnStudyNow {
+  border: none;
+  padding: 4px 16px;
+  border-radius: 16px;
+  min-width: 180px;
+  background-color: #0093fc;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
 /*# sourceMappingURL=app.css.map */
