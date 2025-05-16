@@ -5,6 +5,18 @@ h2 {
     font-weight: 700;
 }
 
+a[href] {
+    color: #000;
+    text-decoration: none;
+}
+
+.user-avatar{
+    width: 36px;
+    height: 36px;
+    border-radius:50%;
+    margin-right: 8px;
+}
+
 .cardCourse-item {
     margin-top: 16px;
     max-height: 400px;
@@ -30,7 +42,7 @@ h2 {
     }
 }
 
-.btnStudyNow{
+.btnStudyNow {
     border: none;
     padding: 4px 16px;
     border-radius: 16px;
@@ -39,4 +51,8 @@ h2 {
     color: #fff;
     font-weight: 700;
     letter-spacing: 1px;
+}
+// modal
+.place-modal{
+    margin: 12% auto;
 }
