@@ -1,19 +1,46 @@
-<div class='mt-4'>
+<form class='mt-4'  name="containerForm" action="/courses/handle-form-actions" method="POST">
     <h3>Khóa học đã xóa</h3>
+
+    <div class='mt-4 d-flex align-items-center'>
+        <div class='form-check mt-2'>
+            <input class='form-check-input' type='checkbox' value='' id='checkboxAlls' />
+            <label class='form-check-label' for='checkboxAlls'>
+                Chọn tất cả
+            </label>
+        </div>
+
+        <div class='form-group ml-4 mr-4'>
+            <label for='inputState'></label>
+            <select id='inputState' class='form-control select-options' name="action" required >
+                <option value=''>--- Chọn hành động ---</option>
+                <option name="forceDelete" value='forcedelete' data-target="#courseDelete-modal">Xóa vĩnh viễn</option>
+                <option value='restore'>Khôi phục</option>
+            </select>
+        </div>
+
+        <button class='btn btn-primary mt-2 btn-CheckAllSubmit disabled btn-apply'>Thực hiện</button>
+    </div>
     <a class="back-ListCourses"  href="/me/stored/courses">Quay lại danh sách khóa học</a>
 
     <table class='table table-striped mt-4'>
         <thead>
             <tr>
+                 <th scope='col'>Chọn</th>
                 <th scope='col'>#</th>
                 <th scope='col'>Name</th>
                 <th scope='col'>Trình độ</th>
-                <th scope='col' colspan='2'>Thời gian tạo</th>
+                <th scope='col' >Thời gian tạo</th>
+                <th scope='col' ></th>
             </tr>
         </thead>
         <tbody>
             {{#each courses}}
                 <tr>
+                    <td>
+                        <div class='form-check text-center mt-2'>
+                            <input class='form-check-input' type='checkbox' name="courseIds[]" value='{{this._id}}' />                          
+                        </div>
+                    </td>
                     <th scope='row' class='align-middle'>{{sum @index 1}}</th>
                     <td class='align-middle'>{{this.name}}</td>
                     <td class='align-middle'>{{this.level}}</td>
@@ -70,10 +97,16 @@
     document.addEventListener('DOMContentLoaded',function () {
 
         var courseId;
+        var containerForm = document.forms['containerForm'];
         var btnDeleteCourse = document.getElementById('btnDelete-course');
         var deleteForm = document.forms['deleteCourse-form'];
         var restoreForm = document.forms['restoreCourse-form'];
         var btnRestore = $('.btn-restore');
+
+        var checkboxAlls = $('#checkboxAlls');
+        var courseItemCheckbox = $('input[name="courseIds[]"]');
+        var btnCheckAllSubmit = $('.btn-CheckAllSubmit');
+
 
         $('#courseDelete-modal').on('show.bs.modal' , function (event) {
             var button = $(event.relatedTarget) 
@@ -94,5 +127,38 @@
             restoreForm.submit();
          
         })
+
+           //checkbox all change
+        checkboxAlls.change(function() {
+            var isChecked = $(this).prop('checked');
+            courseItemCheckbox.prop('checked', isChecked);
+            renderCheckAllSubmit()
+        });
+
+       //courrse item checkbox change
+        courseItemCheckbox.change(() => {
+            var isCheckedAll = courseItemCheckbox.length === $('input[name="courseIds[]"]:checked').length;
+            checkboxAlls.prop('checked', isCheckedAll);
+            renderCheckAllSubmit()
+       })
+
+        //form submit
+        btnCheckAllSubmit.click((e) =>{
+            var submitTable = $(this).hasClass('disabled');
+            if (submitTable) {
+              containerForm.submit();
+            }
+        })
+       //check all btn clicked
+       var renderCheckAllSubmit = () => {
+            var isChecked = $('input[name="courseIds[]"]:checked').length ;
+            if (isChecked > 0) {
+                btnCheckAllSubmit.removeClass('disabled');
+            } else {
+                btnCheckAllSubmit.addClass('disabled');
+            }
+        }
+
+        
     })
 </script>

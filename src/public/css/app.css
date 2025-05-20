@@ -62,4 +62,14 @@ a[href] {
   margin: 12% auto;
 }
 
+.select-options {
+  width: 215px;
+}
+
+.btn-apply {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+}
+
 /*# sourceMappingURL=app.css.map */

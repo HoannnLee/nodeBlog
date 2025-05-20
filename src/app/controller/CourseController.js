@@ -2,6 +2,7 @@ const Course = require('../models/Course');
 const { mongooseToObject } = require('../../util/mongoose');
 
 class CourseController {
+
     // [GET] , /home
     show(req, res, next) {
         Course.findOne({ slug: req.params.slug })
@@ -24,10 +25,7 @@ class CourseController {
         course
             .save()
             .then(() => res.redirect('/me/stored/courses'))
-            .catch(() => {
-                console.error('Lỗi khi lưu Course:', err);
-                next(err);
-            });
+            .catch(next)
     }
 
     // [GET] , /courses/:id/edit
@@ -64,6 +62,34 @@ class CourseController {
         Course.restore({ _id: req.params.id })
             .then(() => res.redirect('/me/trash/courses'))
             .catch(next);
+    }
+
+
+    // [POST] , /courses/handle-form-actions
+    handleFormActions(req, res, next) {
+        switch (req.body.action) {
+            case 'delete':
+                Course.delete({ _id: { $in: req.body.courseIds } })
+                    .then(() => res.redirect('/me/stored/courses'))
+                    .catch(next);
+                break;
+
+            case 'restore':
+                Course.restore({ _id: { $in: req.body.courseIds } })
+                    .then(() => res.redirect('/me/trash/courses'))
+                    .catch(next);
+                break;
+
+            case 'forcedelete':
+                Course.deleteOne({ _id: { $in: req.body.courseIds } })
+                    .then(() => res.redirect('/me/trash/courses'))
+                    .catch(next);
+                break;
+
+            default:
+                res.json({ message: 'Action is invalid' });
+        }
+
     }
 }
 
